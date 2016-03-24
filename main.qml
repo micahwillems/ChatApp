@@ -39,11 +39,13 @@ Window {
         radius: 3
         gradient: Gradient {
             GradientStop {
+                id: gradient1
                 position: 0
                 color: "#8ffdf9"
             }
 
             GradientStop {
+                id: gradient2
                 position: 1
                 color: "#00a9a2"
             }
@@ -149,21 +151,25 @@ Window {
             border.color: "#0954a0"
             gradient: Gradient {
                 GradientStop {
+                    id: gradient3
                     position: 0
                     color: "#ffffff"
                 }
 
                 GradientStop {
+                    id: gradient4
                     position: 0.067
                     color: "#01c7c0"
                 }
 
                 GradientStop {
+                    id: gradient5
                     position: 0.068
                     color: "#37fff8"
                 }
 
                 GradientStop {
+                    id: gradient6
                     position: 1
                     color: "#c0fffd"
                 }
@@ -221,6 +227,7 @@ Window {
                     clip: true
                     font.pointSize: 5
                     style: TextAreaStyle {
+                        id: textstyle1
                         textColor: "#333"
                         selectionColor: "steelblue"
                         selectedTextColor: "#eee"
@@ -297,10 +304,16 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onPressed: {
-                        sendButton.source = "images/window_controls/blue/button-blue-pressed.png"
+                        if (radioBlue.checked == true)
+                            sendButton.source = "images/window_controls/blue/button-blue-pressed.png"
+                        else if (radioBlack.checked == true)
+                            sendButton.source = "images/window_controls/red/button-red-pressed.png"
                     }
                     onReleased: {
-                        sendButton.source = "images/window_controls/blue/button-blue.png"
+                        if (radioBlue.checked == true)
+                            sendButton.source = "images/window_controls/blue/button-blue.png"
+                        else if (radioBlack.checked == true)
+                            sendButton.source = "images/window_controls/red/button-red.png"
                         gApplicationController.sendButtonClicked(chatReplyEdit.text)
                         chatReplyEdit.text = ""
                     }
@@ -321,301 +334,442 @@ Window {
                 anchors.fill: parent
             }*/
             Tab {
-               id: userTab
-               title: "Users"
-               Rectangle {
-                   radius: 10
-                   color: "#00a9a2"
-                   Rectangle {
-                       id: usersContainer
-                       anchors.top: parent.top
-                       anchors.topMargin: 30
-                       anchors.left: parent.left
-                       anchors.leftMargin: 20
-                       width: 160
-                       height: 430
-                       color: "#ffffff"
-                       radius: 1
-                       Flickable {
-                           id: userListScrollFix
-                           width: 432
-                           height: 32
-                           anchors.left: parent.left
-                           anchors.leftMargin: 5
-                           anchors.top: parent.top
-                           anchors.topMargin: 5
-                           contentWidth: userListEdit.width
-                           contentHeight: userListEdit.height
-                           clip: true
+                id: userTab
+                title: "Users"
+                Rectangle {
+                    id: rectangle1
+                    radius: 10
+                    color: "#00a9a2"
+                    Rectangle {
+                        id: usersContainer
+                        anchors.top: parent.top
+                        anchors.topMargin: 30
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        width: 160
+                        height: 430
+                        color: "#ffffff"
+                        radius: 1
+                        Flickable {
+                            id: userListScrollFix
+                            width: 432
+                            height: 32
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            anchors.top: parent.top
+                            anchors.topMargin: 5
+                            contentWidth: userListEdit.width
+                            contentHeight: userListEdit.height
+                            clip: true
 
-                           function ensureVisible(r)
-                           {
-                               if (contentX >= r.x)
-                                   contentX = r.x;
-                               else if (contentX+width <= r.x+r.width)
-                                   contentX = r.x+r.width-width;
-                               if (contentY >= r.y)
-                                   contentY = r.y;
-                               else if (contentY+height <= r.y+r.height)
-                                   contentY = r.y+r.height-height;
-                           }
+                            function ensureVisible(r)
+                            {
+                                if (contentX >= r.x)
+                                    contentX = r.x;
+                                else if (contentX+width <= r.x+r.width)
+                                    contentX = r.x+r.width-width;
+                                if (contentY >= r.y)
+                                    contentY = r.y;
+                                else if (contentY+height <= r.y+r.height)
+                                    contentY = r.y+r.height-height;
+                            }
 
-                           TextEdit {
-                               id: userListEdit
-                               width: userListScrollFix.width
-                               height: userListScrollFix.height
-                               text: gApplicationController.usersOnline
-                               font.family: "Arial"
-                               cursorVisible: false
-                               wrapMode: TextEdit.Wrap
-                               font.pixelSize: 12
-                               onCursorRectangleChanged: userListScrollFix.ensureVisible(cursorRectangle)
-                           }
-                       }
-                   }
-               }
-           }
-           Tab {
-               id: configTab
-               title: "Configuration"
-               Rectangle {
-                   radius: 10
-                   color: "#00a9a2"
+                            TextEdit {
+                                id: userListEdit
+                                width: userListScrollFix.width
+                                height: userListScrollFix.height
+                                text: gApplicationController.usersOnline
+                                font.family: "Arial"
+                                cursorVisible: false
+                                wrapMode: TextEdit.Wrap
+                                font.pixelSize: 12
+                                onCursorRectangleChanged: userListScrollFix.ensureVisible(cursorRectangle)
+                            }
+                        }
+                    }
+                }
+            }
+            Tab {
+                id: configTab
+                title: "Configuration"
+                Rectangle {
+                    id: rectangle4
+                    radius: 10
+                    color: "#00a9a2"
 
-                   Text {
-                       id: nickLabel
-                       x: 42
-                       width: 150
-                       height: 20
-                       color: "#ffffff"
-                       text: qsTr("Nickname:")
-                       wrapMode: Text.WrapAnywhere
-                       font.family: "Verdana"
-                       verticalAlignment: Text.AlignVCenter
-                       anchors.top: parent.top
-                       anchors.topMargin: 100
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       textFormat: Text.AutoText
-                       font.pixelSize: 14
-                   }
+                    Text {
+                        id: nickLabel
+                        x: 42
+                        width: 150
+                        height: 20
+                        color: "#ffffff"
+                        text: qsTr("Nickname:")
+                        wrapMode: Text.WrapAnywhere
+                        font.family: "Verdana"
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.top: parent.top
+                        anchors.topMargin: 100
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        textFormat: Text.AutoText
+                        font.pixelSize: 14
+                    }
 
-                   TextField {
-                       id: nickText
-                       width: 150
-                       height: 28
-                       anchors.top: nickLabel.top
-                       anchors.topMargin: 30
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       style: TextFieldStyle {
-                           textColor: "black"
-                           background: Rectangle {
-                               radius: 2
-                               implicitWidth: nickText.width
-                               implicitHeight: nickText.height
-                               border.width: 0
-                           }
-                       }
-                       onTextChanged: {
-                           if (nickText.text != "") {
-                               buttonConnect.nick = true
-                               buttonConnect.checkCompletion()
-                           } else {
-                               buttonConnect.nick = false
-                               buttonConnect.enabled = false
-                               buttonConnect.color0 = "#777"
-                               buttonConnect.color1 = "#bbb"
-                           }
-                       }
-                   }
+                    TextField {
+                        id: nickText
+                        width: 150
+                        height: 28
+                        anchors.top: nickLabel.top
+                        anchors.topMargin: 30
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        style: TextFieldStyle {
+                            id: textstyle2
+                            textColor: "black"
+                            background: Rectangle {
+                                radius: 2
+                                implicitWidth: nickText.width
+                                implicitHeight: nickText.height
+                                border.width: 0
+                            }
+                        }
+                        onTextChanged: {
+                            if (nickText.text != "") {
+                                buttonConnect.nick = true
+                                buttonConnect.checkCompletion()
+                            } else {
+                                buttonConnect.nick = false
+                                buttonConnect.enabled = false
+                                buttonConnect.color0 = "#777"
+                                buttonConnect.color1 = "#bbb"
+                            }
+                        }
+                    }
 
-                   Text {
-                       id: avatarLabel
-                       x: 42
-                       width: 150
-                       height: 20
-                       color: "#ffffff"
-                       text: qsTr("Avatar:")
-                       wrapMode: Text.WrapAnywhere
-                       font.family: "Verdana"
-                       verticalAlignment: Text.AlignVCenter
-                       anchors.top: nickText.top
-                       anchors.topMargin: 50
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       textFormat: Text.AutoText
-                       font.pixelSize: 14
-                   }
+                    Text {
+                        id: avatarLabel
+                        x: 42
+                        width: 150
+                        height: 20
+                        color: "#ffffff"
+                        text: qsTr("Avatar:")
+                        wrapMode: Text.WrapAnywhere
+                        font.family: "Verdana"
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.top: nickText.top
+                        anchors.topMargin: 50
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        textFormat: Text.AutoText
+                        font.pixelSize: 14
+                    }
 
-                   SpinBox {
-                       id: avatarNum
-                       width: 50
-                       height: 28
-                       anchors.top: avatarLabel.top
-                       anchors.topMargin: 30
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       minimumValue: 0
-                       maximumValue: 21
-                   }
+                    SpinBox {
+                        id: avatarNum
+                        width: 50
+                        height: 28
+                        anchors.top: avatarLabel.top
+                        anchors.topMargin: 30
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        minimumValue: 0
+                        maximumValue: 21
+                    }
 
-                   Text {
-                       id: ipLabel
-                       x: 42
-                       width: 160
-                       height: 20
-                       color: "#ffffff"
-                       text: qsTr("Chatroom IP Address:")
-                       wrapMode: Text.WrapAnywhere
-                       font.family: "Verdana"
-                       verticalAlignment: Text.AlignVCenter
-                       anchors.top: avatarNum.top
-                       anchors.topMargin: 50
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       textFormat: Text.AutoText
-                       font.pixelSize: 14
-                   }
+                    Text {
+                        id: ipLabel
+                        x: 42
+                        width: 160
+                        height: 20
+                        color: "#ffffff"
+                        text: qsTr("Chatroom IP Address:")
+                        wrapMode: Text.WrapAnywhere
+                        font.family: "Verdana"
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.top: avatarNum.top
+                        anchors.topMargin: 50
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        textFormat: Text.AutoText
+                        font.pixelSize: 14
+                    }
 
-                   TextField {
-                       id: ipText
-                       width: 150
-                       height: 28
-                       anchors.top: ipLabel.top
-                       anchors.topMargin: 30
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       validator: RegExpValidator{regExp: /^(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))$/}
-                       style: TextFieldStyle {
-                           textColor: "black"
-                           background: Rectangle {
-                               radius: 2
-                               implicitWidth: nickText.width
-                               implicitHeight: nickText.height
-                               border.width: 0
-                           }
-                       }
-                       onTextChanged: {
-                           if (ipText.text != "") {
-                               buttonConnect.ip = true
-                               buttonConnect.checkCompletion()
-                           } else {
-                               buttonConnect.ip = false
-                               buttonConnect.enabled = false
-                               buttonConnect.color0 = "#777"
-                               buttonConnect.color1 = "#bbb"
-                           }
-                       }
-                   }
+                    TextField {
+                        id: ipText
+                        width: 150
+                        height: 28
+                        anchors.top: ipLabel.top
+                        anchors.topMargin: 30
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        validator: RegExpValidator{regExp: /^(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))$/}
+                        style: TextFieldStyle {
+                            textColor: "black"
+                            background: Rectangle {
+                                radius: 2
+                                implicitWidth: nickText.width
+                                implicitHeight: nickText.height
+                                border.width: 0
+                            }
+                        }
+                        onTextChanged: {
+                            if (ipText.text != "") {
+                                buttonConnect.ip = true
+                                buttonConnect.checkCompletion()
+                            } else {
+                                buttonConnect.ip = false
+                                buttonConnect.enabled = false
+                                buttonConnect.color0 = "#777"
+                                buttonConnect.color1 = "#bbb"
+                            }
+                        }
+                    }
 
-                   Button {
-                       id: buttonConnect
-                       text: qsTr("Connect")
-                       anchors.top: ipText.top
-                       anchors.topMargin: 50
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       enabled: false
-                       property color color0: "#777"
-                       property color color1: "#bbb"
-                       style: ButtonStyle {
-                           background: Rectangle {
-                               implicitWidth: 100
-                               implicitHeight: 25
-                               border.width: control.activeFocus ? 2 : 1
-                               border.color: "#888"
-                               radius: 4
-                               gradient: Gradient {
-                                   GradientStop { position: 0 ; color: control.pressed ? "#00a9a2" : buttonConnect.color0 }
-                                   GradientStop { position: 1 ; color: control.pressed ? "#8ffdf9" : buttonConnect.color1 }
-                               }
-                           }
-                       }
-                       property bool nick: false
-                       property bool ip: false
-                       function checkCompletion() {
-                           if (nick & ip) {
-                               buttonConnect.enabled = true
-                               buttonConnect.color0 = "#8ffdf9"
-                               buttonConnect.color1 = "#00a9a2"
-                           }
-                       }
+                    Button {
+                        id: buttonConnect
+                        text: qsTr("Connect")
+                        anchors.top: ipText.top
+                        anchors.topMargin: 50
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        enabled: false
+                        property color color0: "#777"
+                        property color color1: "#bbb"
+                        property color color2: "#00a9a2"
+                        property color color3: "#8ffdf9"
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                id: rectangle3
+                                implicitWidth: 100
+                                implicitHeight: 25
+                                border.width: control.activeFocus ? 2 : 1
+                                border.color: "#888"
+                                radius: 4
+                                gradient: Gradient {
+                                    GradientStop { position: 0 ; color: control.pressed ? color2 : buttonConnect.color0 }
+                                    GradientStop { position: 1 ; color: control.pressed ? color3 : buttonConnect.color1 }
+                                }
+                            }
+                        }
+                        property bool nick: false
+                        property bool ip: false
+                        function checkCompletion() {
+                            if (nick & ip) {
+                                buttonConnect.enabled = true
+                                if (radioBlue.checked == true) {
+                                buttonConnect.color0 = "#8ffdf9"
+                                buttonConnect.color1 = "#00a9a2"
+                                } else if (radioBlack.checked == true) {
+                                    buttonConnect.color0 = "#696969"
+                                    buttonConnect.color1 = "#252525"
+                                }
+                            }
+                        }
 
-                       onClicked : {
-                           gApplicationController.connectButtonClicked(nickText.text, avatarNum.value, ipText.text)
-                           buttonConnect.color0 = "#777"
-                           buttonConnect.color1 = "#bbb"
-                           buttonDisconnect.color0 = "#8ffdf9"
-                           buttonDisconnect.color1 = "#00a9a2"
-                           buttonConnect.enabled = false
-                           ipText.enabled = false
-                           ipText.text = ""
-                           avatarNum.enabled = false
-                           nickText.enabled = false
-                           nickText.text = ""
-                           buttonDisconnect.enabled = true
-                       }
-                   }
-                   Button {
-                       id: buttonDisconnect
-                       text: qsTr("Disconnect")
-                       anchors.top: buttonConnect.top
-                       anchors.topMargin: 50
-                       anchors.left: parent.left
-                       anchors.leftMargin: 30
-                       enabled: false
-                       property color color0: "#777"
-                       property color color1: "#bbb"
-                       style: ButtonStyle {
-                           background: Rectangle {
-                               implicitWidth: 100
-                               implicitHeight: 25
-                               border.width: control.activeFocus ? 2 : 1
-                               border.color: "#888"
-                               radius: 4
-                               gradient: Gradient {
-                                   GradientStop { position: 0 ; color: control.pressed ? "#00a9a2" : buttonDisconnect.color0 }
-                                   GradientStop { position: 1 ; color: control.pressed ? "#8ffdf9" : buttonDisconnect.color1 }
-                               }
-                           }
-                       }
-                       onClicked : {
-                           gApplicationController.disconnect()
-                           buttonDisconnect.color0 = "#777"
-                           buttonDisconnect.color1 = "#bbb"
-                           buttonConnect.color0 = "#8ffdf9"
-                           buttonConnect.color1 = "#00a9a2"
-                           buttonDisconnect.enabled = false
-                           ipText.enabled = true
-                           avatarNum.enabled = true
-                           nickText.enabled = true
-                       }
-                   }
-               }
-           }
-           style: TabViewStyle {
-               frameOverlap: 10
-               tab: Rectangle {
-                   color: styleData.selected ? "#00a9a2" : "#8ffdf9"
-                   border.color:  "#00a9a2"
-                   implicitWidth: tabText.width + 19
-                   implicitHeight: 34
-                   radius: 5
-                   Text {
-                       id: tabText
-                       anchors.centerIn: parent
-                       text: styleData.title
-                       color: styleData.selected ? "white" : "black"
-                       font.family: "Verdana"
-                       font.pixelSize: 17
-                   }
-               }
-               frame: Rectangle {
-                   radius: 10
-                   color: "#00a9a2"
-               }
-           }
+                        onClicked : {
+                            gApplicationController.connectButtonClicked(nickText.text, avatarNum.value, ipText.text)
+                            buttonConnect.color0 = "#777"
+                            buttonConnect.color1 = "#bbb"
+                            if (radioBlue.checked == true) {
+                            buttonDisconnect.color0 = "#8ffdf9"
+                            buttonDisconnect.color1 = "#00a9a2"
+                            } else if (radioBlack.checked == true) {
+                                buttonConnect.color0 = "#696969"
+                                buttonConnect.color1 = "#252525"
+                            }
+
+                            buttonConnect.enabled = false
+                            ipText.enabled = false
+                            ipText.text = ""
+                            avatarNum.enabled = false
+                            nickText.enabled = false
+                            nickText.text = ""
+                            buttonDisconnect.enabled = true
+                        }
+                    }
+                    Button {
+                        id: buttonDisconnect
+                        text: qsTr("Disconnect")
+                        anchors.top: buttonConnect.top
+                        anchors.topMargin: 50
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        enabled: false
+                        property color color0: "#777"
+                        property color color1: "#bbb"
+                        property color color2: "#00a9a2"
+                        property color color3: "#8ffdf9"
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                id: rectangle5
+                                implicitWidth: 100
+                                implicitHeight: 25
+                                border.width: control.activeFocus ? 2 : 1
+                                border.color: "#888"
+                                radius: 4
+                                gradient: Gradient {
+                                    GradientStop { position: 0 ; color: control.pressed ? color2 : buttonDisconnect.color0 }
+                                    GradientStop { position: 1 ; color: control.pressed ? color3 : buttonDisconnect.color1 }
+                                }
+                            }
+                        }
+                        onClicked : {
+                            gApplicationController.disconnect()
+                            buttonDisconnect.color0 = "#777"
+                            buttonDisconnect.color1 = "#bbb"
+                            if (radioBlue.checked == true) {
+                            buttonConnect.color0 = "#8ffdf9"
+                            buttonConnect.color1 = "#00a9a2"
+                            } else if (radioBlack.checked == true) {
+                                buttonConnect.color0 = "#696969"
+                                buttonConnect.color1 = "#252525"
+                            }
+
+                            buttonDisconnect.enabled = false
+                            ipText.enabled = true
+                            avatarNum.enabled = true
+                            nickText.enabled = true
+                        }
+                    }
+                }
+            }
+            style: TabViewStyle {
+                frameOverlap: 10
+                tab: Rectangle {
+                    id: rectangle2
+                    property color color0: "#00a9a2"
+                    property color color1: "#8ffdf9"
+                    color: styleData.selected ? color0 : color1
+                    border.color:  "#00a9a2"
+                    implicitWidth: tabText.width + 19
+                    implicitHeight: 34
+                    radius: 5
+                    Text {
+                        id: tabText
+                        anchors.centerIn: parent
+                        text: styleData.title
+                        property color color0: "#fff"
+                        property color color1: "#000"
+                        color: styleData.selected ? color0 : color1
+                        font.family: "Verdana"
+                        font.pixelSize: 17
+                    }
+                }
+                frame: Rectangle {
+                    id: rectangle6
+                    radius: 10
+                    color: "#00a9a2"
+                }
+            }
         }
+
+        RadioButton {
+            id: radioBlue
+            x: 730
+            text: qsTr("Blue")
+            anchors.right: minimize.left
+            anchors.rightMargin: 72
+            anchors.top: parent.top
+            anchors.topMargin: 8
+            checked: true
+            z:2
+            onClicked: {
+                if (radioBlack.checked == true) {
+                    radioBlack.checked = false
+                    gradient1.color = "#8ffdf9"
+                    gradient2.color = "#00a9a2"
+                    close.source = "images/window_controls/blue/close.png"
+                    closeBackFill.color = "#fff"
+                    minimize.source = "images/window_controls/blue/minimize.png"
+                    minimizeBackFill.color = "#fff"
+                    chatContainer.color = "#0954a0"
+                    chatContainer.border.color = "#0954a0"
+                    gradient3.color = "#fff"
+                    gradient4.color = "#01c7c0"
+                    gradient5.color = "#37fff8"
+                    gradient6.color = "#c0fffd"
+                    chatTitleDivider.border.color = "#0c80f3"
+                    chatTitle.color = "#fff"
+                    chatDisplayContainer.color = "#fff"
+                    chatDisplayContainer.color = "#fff"
+                    textstyle1.textColor = "#333"
+                    textstyle1.selectionColor = "steelblue"
+                    textstyle1.selectedTextColor = "#eee"
+                    textstyle1.backgroundColor = "#eee"
+                    chatReplyContainer.color = "#fff"
+                    sendButton.source = "images/window_controls/blue/button-blue.png"
+                    rectangle1.color = "#00a9a2"
+                    usersContainer.color = "#fff"
+                    rectangle4.color = "#00a9a2"
+                    nickLabel.color = "#fff"
+                    avatarLabel.color = "#fff"
+                    ipLabel.color = "#fff"
+                    rectangle3.color = "#888"
+                    buttonConnect.color2 = "#00a9a2"
+                    buttonConnect.color3 = "#8ffdf9"
+                    buttonDisconnect.color2 = "#00a9a2"
+                    buttonDisconnect.color3 = "#8ffdf9"
+                    rectangle5.border.color = "#888"
+                    rectangle2.color0 = "#00a9a2"
+                    rectangle2.color1 = "#8ffdf9"
+                    rectangle2.border.color = "#00a9a2"
+                    rectangle6.color = "#00a9a2"
+                }
+            }
+        }
+
+        RadioButton {
+            id: radioBlack
+            x: 665
+            text: qsTr("Black")
+            anchors.right: radioBlue.left
+            anchors.rightMargin: 7
+            anchors.top: parent.top
+            anchors.topMargin: 8
+            z:2
+            onClicked: {
+                if (radioBlue.checked == true) {
+                    radioBlue.checked = false
+                    gradient1.color = "#696969"
+                    gradient2.color = "#252525"
+                    close.source = "images/window_controls/red/close.png"
+                    closeBackFill.color = "#fff"
+                    minimize.source = "images/window_controls/red/minimize.png"
+                    minimizeBackFill.color = "#fff"
+                    chatContainer.color = "#2f2f2f"
+                    chatContainer.border.color = "#070707"
+                    gradient3.color = "#222"
+                    gradient4.color = "#717171"
+                    gradient5.color = "#161616"
+                    gradient6.color = "#2a2a2a"
+                    chatTitleDivider.border.color = "#0f0f0f"
+                    chatTitle.color = "#fff"
+                    chatDisplayContainer.color = "#222"
+                    textstyle1.textColor = "#aaa"
+                    textstyle1.selectionColor = "#999"
+                    textstyle1.selectedTextColor = "#eee"
+                    textstyle1.backgroundColor = "#eee"
+                    chatReplyContainer.color = "#222"
+                    sendButton.source = "images/window_controls/red/button-red.png"
+                    rectangle1.color = "#252525"
+                    usersContainer.color = "#222"
+                    rectangle4.color = "#252525"
+                    nickLabel.color = "#fff"
+                    avatarLabel.color = "#fff"
+                    ipLabel.color = "#fff"
+                    rectangle3.color = "#888"
+                    buttonConnect.color2 = "#252525"
+                    buttonConnect.color3 = "#696969"
+                    buttonDisconnect.color2 = "#252525"
+                    buttonDisconnect.color3 = "#696969"
+                    rectangle5.border.color = "#888"
+                    rectangle2.color0 = "#252525"
+                    rectangle2.color1 = "#696969"
+                    rectangle2.border.color = "#252525"
+                    rectangle6.color = "#252525"
+                }
+            }
+        }
+
     }
 }
