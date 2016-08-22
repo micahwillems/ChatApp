@@ -2,7 +2,7 @@ import QtQuick 2.5
 
 Item {
     id: messageItem
-    width: 559
+    width: chatDisplayScroll.width - 10
     anchors.left: parent.left
     implicitHeight: messageCont.implicitHeight + 20
 

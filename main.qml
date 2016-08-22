@@ -212,25 +212,27 @@ Window {
                 height: 349
                 color: "#ffffff"
                 radius: 1
-                TextArea {
-                    id: chatDisplayText
-                    textFormat: Text.RichText
-                    readOnly: true
-                    font.family: "Arial"
+                ScrollView {
+                    id: chatDisplayScroll
                     anchors.fill: parent
                     clip: true
-                    font.pointSize: 5
-                    style: TextAreaStyle {
-                        textColor: "#333"
-                        selectionColor: "steelblue"
-                        selectedTextColor: "#eee"
-                        backgroundColor: "#eee"
+                    style: ScrollViewStyle {
+                        transientScrollBars: true
                     }
                     ListView {
+                        property bool atBottom: true
                         id: messageList
+                        highlightFollowsCurrentItem: true
                         anchors.fill: parent
                         delegate: MessageIncoming {}
                         model: gApplicationController
+                        onContentHeightChanged: {
+                            if (atBottom)
+                                positionViewAtIndex(count - 1, ListView.Contain);
+                        }
+                        onContentYChanged: {
+                            atBottom = atYEnd;
+                        }
                     }
                 }
             }
@@ -279,7 +281,7 @@ Window {
                         cursorVisible: false
                         wrapMode: TextEdit.Wrap
                         font.pixelSize: 12
-                        onCursorRectangleChanged: chatReplyScrollFix.ensureVisible(cursorRectangle)
+                        onCursorRectangleChanged: chatReplyScrollFix.ensureVisible(cursorRectangle);
                     }
                 }
             }
